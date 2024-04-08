@@ -5,6 +5,8 @@ public class UserValidator: UserValidatorGeneric
 {
     protected const int AGE = 21;
     
+    
+    //need for error feedback 
     public override bool UserValidation(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
     {
         if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))

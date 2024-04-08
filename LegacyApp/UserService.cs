@@ -2,7 +2,7 @@
 
 namespace LegacyApp
 {
-    public class UserService
+    public class UserService 
     {
         private UserServiceScoreCalculatorGeneric userServiceScoreCalculator;
         private UserValidatorGeneric userValidator;
@@ -16,6 +16,7 @@ namespace LegacyApp
             clientRepository = new ClientRepository();
         }
         
+        //Added a new constructor to replace validators and repository without changing the class
         public UserService(UserServiceScoreCalculatorGeneric _userServiceScoreCalculatorGeneric, 
                             UserValidatorGeneric _userValidator,
                             ClientRepositoryGeneric _clientRepository)
@@ -31,36 +32,38 @@ namespace LegacyApp
             {
                 return false;
             }
-            
-            try
+            else
             {
-                var client = clientRepository.GetById(clientId);
-                
-                var user = new User
+                try
                 {
-                    Client = client,
-                    DateOfBirth = dateOfBirth,
-                    EmailAddress = email,
-                    FirstName = firstName,
-                    LastName = lastName
-                };
+                    var client = clientRepository.GetById(clientId);
+                
+                    var user = new User
+                    {
+                        Client = client,
+                        DateOfBirth = dateOfBirth,
+                        EmailAddress = email,
+                        FirstName = firstName,
+                        LastName = lastName
+                    };
 
-                userServiceScoreCalculator.UserCreditScoreCalculation(user);
+                    userServiceScoreCalculator.UserCreditScoreCalculation(user);
                 
-                if (userServiceScoreCalculator.UserCreditScoreValidation(user))
-                {
-                    UserDataAccess.AddUser(user);
-                    return true;
+                    if (userServiceScoreCalculator.UserCreditScoreValidation(user))
+                    {
+                        UserDataAccess.AddUser(user);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (ArgumentException e)
                 {
-                    return false;
+                    //Need for log 
+                    return false; //change the operation of the application, it does not crash the entire program if the client does not exist :)
                 }
-            }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e);
-                return false; //zmiana działania aplikacji, nie wywala całego programu przy nieistniejącym kliencie :)
             }
         }
     }
