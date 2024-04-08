@@ -1,13 +1,11 @@
 ﻿using System;
 namespace LegacyApp;
 
-public abstract class UserServiceGeneric
+public class UserValidator: UserValidatorGeneric
 {
-    protected ClientRepository clientRepository = new ClientRepository();
     protected const int AGE = 21;
-    protected UserServiceScoreCalculatorGeneric userServiceScoreCalculator = new UserServiceScoreCalculator(); 
     
-    protected bool UserValidation(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
+    public override bool UserValidation(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
     {
         if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
         {
@@ -31,7 +29,7 @@ public abstract class UserServiceGeneric
         return true;
     }
 
-    protected bool EmailValidation(string email)
+    public override bool EmailValidation(string email)
     {
         if (!email.Contains("@") && !email.Contains("."))
         {
