@@ -33,7 +33,7 @@ public class UserValidator: UserValidatorGeneric
 
     public override bool EmailValidation(string email)
     {
-        if (!email.Contains("@") && !email.Contains("."))
+        if (!email.Contains("@") || !email.Contains(".")) // zmian w stosunku do orginalnej procedury
         {
             return false;
         }
